@@ -9,23 +9,23 @@ def index(request):
 
 # Дизайн
 def design_page(request):
-    template = 'posts/index.html'
+    template = 'posts/design.html'
     return render(request, template)
 
 
 # Веб-разработка
 def web_dev_page(request):
-    template = 'posts/index.html'
+    template = 'posts/web_dev.html'
     return render(request, template)
 
 
 # Мобильная разработка
 def mob_dev_page(request):
-    template = 'posts/index.html'
+    template = 'posts/mob_dev.html'
     return render(request, template)
 
 
 # Маркетинг
 def market_page(request):
-    template = 'posts/index.html'
+    template = 'posts/market.html'
     return render(request, template)
