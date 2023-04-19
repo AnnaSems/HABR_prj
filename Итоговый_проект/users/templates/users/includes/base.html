@@ -1,0 +1,17 @@
+{% for post in posts %}
+<div class="block">
+    <ul class="post_bar">
+        <li>
+            Автор {{ post.author.get_full_name }}
+        </li>
+        <li>
+            {{ post.pub_date|date:"d.m.Y" }}
+        </li>
+    </ul>
+    <h3>{{ post.header }}</h3>
+    <p>{{ post.text }}</p>
+    <img src="{{ post.img }}" alt="">
+    {% if not forloop.last %}
+    <hr>{% endif %}
+    {% endfor %}
+</div>

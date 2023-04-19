@@ -19,13 +19,10 @@ class Post(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='posts'
-    ),
+    )
     img = models.ImageField(upload_to='images/',
-                            verbose_name="Загрузить картинку")
+                            verbose_name="Загрузить картинку", blank=True)
     category = models.CharField(
         max_length=150, choices=CHOICES, null=True, blank=True)
     # like = models.ForeignKey(Like,)
     # comment = models.ForeignKey(Comment,)
-
-    def __str__(self) -> str:
-        return self.header

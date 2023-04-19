@@ -5,8 +5,8 @@ from . models import Post
 
 class PostAdmin(admin.ModelAdmin):
     # Перечисляем поля, которые должны отображаться в админке
-    list_display = ('pk', 'header', 'text', 'pub_date',
-                    'author', 'img', 'category')
+    list_display = ('pk', 'header', 'pub_date',
+                    'author', 'category')
     # Добавляем интерфейс для поиска по тзаголовку постов
     search_fields = ('header',)
     # Добавляем возможность фильтрации по дате

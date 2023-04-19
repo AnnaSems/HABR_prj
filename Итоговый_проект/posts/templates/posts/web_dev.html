@@ -14,21 +14,7 @@
             {% include 'includes/header.html' %}
         </header>
         <main>
-            {% for post in posts %}
-            <ul>
-                <li>
-                    {{ post.author.get_full_name }}
-                </li>
-                <li>
-                    {{ post.pub_date|date:"d.m.Y" }}
-                </li>
-            </ul>
-            <p>{{ post.header }}</p>
-            <p>{{ post.text }}</p>
-            <img src="{{ post.img }}" alt="">
-            {% if not forloop.last %}
-            <hr>{% endif %}
-            {% endfor %}
+            {% include 'includes/base.html' %}
         </main>
         <aside>
             Лучшие блоги
