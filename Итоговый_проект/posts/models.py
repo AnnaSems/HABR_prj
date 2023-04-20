@@ -18,7 +18,7 @@ class Post(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='posts'
+        related_name='posts',
     )
     img = models.ImageField(upload_to='images/',
                             verbose_name="Загрузить картинку", blank=True)

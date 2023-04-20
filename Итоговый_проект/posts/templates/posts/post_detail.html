@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+    <head>
+        <title>Пост</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/static/css/index.css" type="text/css">
+    </head>
+
+    <body>
+        <header>
+            {% include 'includes/header.html' %}
+        </header>
+        <main class="profile_user box_1">
+            <div class="profile_userbox box">
+                <p>Профиль пользователя</p>
+                <h4>{{ author.get_full_name}}</h4>
+                <img src="/static/img/avatardefault.jpeg" alt="logo">
+                <p>Публикации: {{author.posts.count}}</p>
+            </div>
+            <div class="block box_2">
+                <ul class="post_bar">
+                    <li>
+                        <a href="{% url 'profile' post.author.username %}">{{ post.author.username}}</a>
+                    </li>
+                    <li class="list-group-item">
+                        {{post.pub_date|date:"d.m.Y"}}
+                    </li>
+                </ul>
+                <article class="col-12 col-md-9">
+                    <h3>{{ post.header }}</h3>
+                    <p>{{ post.text }}</p>
+                    <img src="{{ post.img }}" alt="">
+                </article>
+            </div>
+        </main>
+        <footer class="border-top text-center py-3">
+            <p>© <!--2021 --> Copyright Хабр</p>
+        </footer>
+    </body>
+
+</html>

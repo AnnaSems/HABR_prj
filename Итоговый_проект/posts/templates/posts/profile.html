@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+    <head>
+        <!-- Подключены иконки, стили и заполенены мета теги -->
+        <title>Профайл пользователя <!--Лев Толстой--></title>
+        <link rel="stylesheet" href="/static/css/index.css" type="text/css">
+    </head>
+
+    <body>
+        <header>
+            {% include 'includes/header.html' %}
+        </header>
+        <main class="profile_user">
+            <div class="profile_userbox">
+                <p>Профиль пользователя</p>
+                <h4>{{ author.get_full_name}}</h4>
+                <img src="/static/img/avatardefault.jpeg" alt="logo">
+                <p>Публикации: {{author.posts.count}}</p>
+            </div>
+            {% for post in page %}
+            <div class="block_1">
+                <ul class="post_bar prof">
+                    <li>
+                        <a href="{% url 'profile' post.author.username %}">{{ post.author.username}}</a>
+                    </li>
+                    <li>
+                        {{ post.pub_date|date:"d.m.Y" }}
+                    </li>
+                </ul>
+                <h3>{{ post.header }}</h3>
+                <p>{{ post.text }}</p>
+                <img src="{{ post.img }}" alt="">
+                <button class="btn"><a href="{% url 'post_detail' post.id %}">Читать полностью</a></button>
+                {% if not forloop.last %}
+                {% endif %}
+                <div class="blink"><br></div>
+                {% endfor %}
+            </div>
+
+            {% include 'includes/paginator.html' %}
+        </main>
+        </div>
+        </main>
+        <footer class="border-top text-center py-3">
+            <p>© <!--2021 --> Copyright Хабр</p>
+        </footer>
+    </body>
+
+</html>

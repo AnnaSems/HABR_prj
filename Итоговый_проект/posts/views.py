@@ -1,7 +1,8 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render, redirect
+from .forms import PostForm
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from . models import Post
+from . models import Post, User
 
 
 def authorized_only(func):
@@ -76,3 +77,44 @@ def market_page(request):
     }
     template = 'posts/market.html'
     return render(request, template, context)
+
+
+def profile(request, username):
+    author = get_object_or_404(User, username=username)
+    latest = author.posts.all().order_by('-pub_date')
+    paginator = Paginator(latest, 9)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    context = {
+        'page': page,
+        "author": author,
+        'paginator': paginator
+    }
+    return render(request, 'posts/profile.html', context)
+
+
+def post_detail(request, post_id):
+    post_pk = Post.objects.filter(id=post_id)
+    post = get_object_or_404(Post, id=post_id)
+    author = post.author
+    context = {
+        'post_pk': post_pk,
+        'author': author,
+        'post': post,
+    }
+    return render(request, 'posts/post_detail.html', context)
+
+
+@login_required
+def new_post(request):
+    user = request.user
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = user
+            post.save()
+            return redirect('homepage')
+        return render(request, 'posts/new.html', {'form': form})
+    form = PostForm()
+    return render(request, 'posts/new.html', {'form': form})

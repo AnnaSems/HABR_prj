@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+    <head>
+        <!-- Подключены иконки, стили и заполенены мета теги -->
+        <title>Профайл пользователя <!--Лев Толстой--></title>
+        <link rel="stylesheet" href="/static/css/index.css" type="text/css">
+    </head>
+
+    <body>
+        <header>
+            {% include 'includes/header.html' %}
+        </header>
+        <main class="main-cls">
+            {% block content %}
+            <h1>Новый пост</h1>
+            <form method="POST" class="post-form">{% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Добавить статью" class="input_cs" />
+            </form>
+            {% endblock %}
+        </main>
+
+        <footer class="border-top text-center py-3">
+            <p>© <!--2021 --> Copyright Хабр</p>
+        </footer>
+    </body>
+
+
+</html>
