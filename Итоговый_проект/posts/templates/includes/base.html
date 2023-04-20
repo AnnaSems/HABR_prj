@@ -1,4 +1,5 @@
-{% for post in posts %}
+{% block content %}
+{% for post in page_obj %}
 <div class="block">
     <ul class="post_bar">
         <li>
@@ -12,6 +13,10 @@
     <p>{{ post.text }}</p>
     <img src="{{ post.img }}" alt="">
     {% if not forloop.last %}
-    <hr>{% endif %}
+    {% endif %}
+    <div class="blink"><br></div>
     {% endfor %}
 </div>
+
+{% include './paginator.html' %}
+{% endblock %}
