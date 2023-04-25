@@ -16,4 +16,11 @@ urlpatterns = [
     path('marketing/', views.market_page, name='market'),
     # Новый пост
     path('new/', views.new_post, name='new_post'),
+    # комментарии
+    path('posts/<int:post_id>/comment/', views.add_comment, name='add_comment'),
+    # лайки
+    path('posts/<int:post_id>/like/', views.like_dislike, name="post_like"),
+    #поиск
+    path('search/', views.search_page, name="search"),
+    #выборка по релевантности
 ]

@@ -11,7 +11,11 @@
     </ul>
     <h3>{{ post.header }}</h3>
     <p>{{ post.text }}</p>
-    <img src="{{ post.img }}" alt="">
+    {% if post.img %}
+    <img src="{{post.img.url}}" class="post_img"><br>
+    {% else %}
+    <p></p>
+    {% endif %}
     <button class="btn"><a href="{% url 'post_detail' post.id %}">Читать полностью</a></button>
     {% if not forloop.last %}
     {% endif %}

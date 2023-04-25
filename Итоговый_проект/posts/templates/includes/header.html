@@ -17,6 +17,11 @@
         {% if user.is_authenticated %}
         <a href="{% url 'new_post' %}">Добавить статью</a>
         {% endif %}
-        <a href="{% url 'login' %}"><img src="{% static 'img/user-interface.png' %}" alt="Личный кабинет"></a>
+        <a class="img_search" href="{% url 'search' %}"><img src="{% static 'img/free-icon-search-3991270.png' %}"
+                alt="Поиск"></a>
+        <div class="dropdown"><a href="#"><img src="{% static 'img/user-interface.png' %}" alt="Личный кабинет"></a>
+            {% include './menu.html' %}
+        </div>
+        </a>
     </div>
 </div>

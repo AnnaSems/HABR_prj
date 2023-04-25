@@ -1,0 +1,5 @@
+<h5>Лучшие авторы</h5>
+<hr>
+{% for rate in max_rate %}
+<a href="{% url 'profile' rate.author.username %}">{{ rate.author.get_full_name }}</a><br>
+{% endfor %}

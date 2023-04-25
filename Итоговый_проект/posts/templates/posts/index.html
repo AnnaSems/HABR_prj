@@ -4,8 +4,7 @@
 
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="{% static 'css/index.css' %}" type="text/css">
-
+        <link rel="stylesheet" type="text/css" href="/static/css/index.css">
     </head>
 
     <body>
@@ -16,10 +15,9 @@
             {% include 'includes/base.html' %}
         </main>
         <aside>
-            Тренировки возвращаются — с новыми задачами и новыми лекциями. Теперь за решение задач вы будете подниматься
-            в рейтинге участников. Лучшие получат фаст‑трек в Яндекс, сертификаты и приглашение на награждение в офис в
-            Москве. Если живёте в другом городе России — привезём за счёт компании. Если вам не хватает задач из новых
-            Тренировок, пройдите Тренировки 1.0 и 2.0!
+            <div class="aside">
+                {% include 'includes/aside.html' %}
+            </div>
         </aside>
         <footer>
             В рамках Chaos Engineering команда инженеров создает намеренные нарушения в работе системы, например,

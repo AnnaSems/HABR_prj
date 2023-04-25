@@ -2,12 +2,10 @@
 <html lang="ru">
 
     <head>
-        <!-- Подключены иконки, стили и заполенены мета теги -->
-        <title>Профайл пользователя <!--Лев Толстой--></title>
         <link rel="stylesheet" href="/static/css/index.css" type="text/css">
     </head>
 
-    <body>
+    <body class="profile_body">
         <header>
             {% include 'includes/header.html' %}
         </header>
@@ -30,8 +28,13 @@
                 </ul>
                 <h3>{{ post.header }}</h3>
                 <p>{{ post.text }}</p>
-                <img src="{{ post.img }}" alt="">
+                {% if post.img %}
+                <img src="{{post.img.url}}" class="post_img_"><br>
+                {% else %}
+                <p></p>
+                {% endif %}
                 <button class="btn"><a href="{% url 'post_detail' post.id %}">Читать полностью</a></button>
+                {{ all_comments.count }}
                 {% if not forloop.last %}
                 {% endif %}
                 <div class="blink"><br></div>
@@ -43,7 +46,9 @@
         </div>
         </main>
         <footer class="border-top text-center py-3">
-            <p>© <!--2021 --> Copyright Хабр</p>
+            <p>©
+                <!--2021 --> Copyright Хабр
+            </p>
         </footer>
     </body>
 

@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="/static/css/index.css" type="text/css">
     </head>
 
-    <body>
+    <body class="profile_body">
         <header>
             {% include 'includes/header.html' %}
         </header>
@@ -30,12 +30,21 @@
                 <article class="col-12 col-md-9">
                     <h3>{{ post.header }}</h3>
                     <p>{{ post.text }}</p>
-                    <img src="{{ post.img }}" alt="">
+                    {% if post.img %}
+                    <img src="{{post.img.url}}" class="post_img_detail"><br>
+                    {% else %}
+                    <p></p>
+                    {% endif %}
                 </article>
+                <!-- Лайки -->
+                {% include 'includes/likes.html' %}
+                {% include 'includes/add_comment.html' %}
             </div>
         </main>
         <footer class="border-top text-center py-3">
-            <p>© <!--2021 --> Copyright Хабр</p>
+            <p>©
+                <!--2021 --> Copyright Хабр
+            </p>
         </footer>
     </body>
 

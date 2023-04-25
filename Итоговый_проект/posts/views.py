@@ -1,26 +1,24 @@
 from django.core.paginator import Paginator
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from . models import Post, User
-
-
-def authorized_only(func):
-    def check_user(request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return func(request, *args, **kwargs)
-        return redirect('/auth/login/')
-    return check_user
+from django.http import HttpResponseRedirect
+from django.views.generic.detail import DetailView
+from django.db.models import Max, Q
+from django.urls import reverse
+from . models import Post, User, Comment
 
 
 # Главная страницаs
 def index(request):
-    posts = Post.objects.order_by('-pub_date')[:10]
-    paginator = Paginator(posts, 9)
+    posts = Post.objects.all().order_by('-pub_date')
+    paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    max_rate_author = Post.objects.all().order_by('-likes')[:10]
     context = {
         'page_obj': page_obj,
+        'max_rate': max_rate_author,
     }
     return render(request, 'posts/index.html', context)
 
@@ -31,8 +29,10 @@ def design_page(request):
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    max_rate_author = Post.objects.all().order_by('-likes')[:10]
     context = {
         'page_obj': page_obj,
+        'max_rate': max_rate_author,
     }
     template = 'posts/design.html'
     return render(request, template, context)
@@ -45,8 +45,10 @@ def web_dev_page(request):
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    max_rate_author = Post.objects.all().order_by('-likes')[:10]
     context = {
         'page_obj': page_obj,
+        'max_rate': max_rate_author,
     }
     template = 'posts/web_dev.html'
     return render(request, template, context)
@@ -58,8 +60,10 @@ def mob_dev_page(request):
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    max_rate_author = Post.objects.all().order_by('-likes')[:10]
     context = {
         'page_obj': page_obj,
+        'max_rate': max_rate_author,
     }
     template = 'posts/mob_dev.html'
     return render(request, template, context)
@@ -72,8 +76,10 @@ def market_page(request):
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    max_rate_author = Post.objects.all().order_by('-likes')[:10]
     context = {
         'page_obj': page_obj,
+        'max_rate': max_rate_author,
     }
     template = 'posts/market.html'
     return render(request, template, context)
@@ -88,7 +94,7 @@ def profile(request, username):
     context = {
         'page': page,
         "author": author,
-        'paginator': paginator
+        'paginator': paginator,
     }
     return render(request, 'posts/profile.html', context)
 
@@ -97,10 +103,15 @@ def post_detail(request, post_id):
     post_pk = Post.objects.filter(id=post_id)
     post = get_object_or_404(Post, id=post_id)
     author = post.author
+    comment_form = CommentForm(request.POST or None)
+    all_comments = Comment.objects.filter(
+        article=post_id).order_by('-created')
     context = {
         'post_pk': post_pk,
         'author': author,
         'post': post,
+        'comment_form': comment_form,
+        'all_comments': all_comments
     }
     return render(request, 'posts/post_detail.html', context)
 
@@ -109,7 +120,7 @@ def post_detail(request, post_id):
 def new_post(request):
     user = request.user
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = user
@@ -118,3 +129,50 @@ def new_post(request):
         return render(request, 'posts/new.html', {'form': form})
     form = PostForm()
     return render(request, 'posts/new.html', {'form': form})
+
+
+@login_required
+def add_comment(request, post_id):
+    post = Post.objects.get(id=post_id)
+    form = CommentForm(request.POST or None)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.author = request.user
+        comment.article = post
+        comment.save()
+    return redirect('post_detail', post_id=post_id)
+
+
+@login_required
+def like_dislike(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    return redirect('post_detail', post_id=post_id)
+
+
+def search_page(request):
+    search_post = request.GET.get('search')
+    if search_post:
+        posts = Post.objects.filter(Q(header__icontains=search_post) & Q(text__icontains=search_post))
+    else:
+        return render(request, 'posts/search.html')
+        
+    return render(request, 'posts/search.html', {"posts": posts})
+    
+# def search_relevant(request, req):
+#     search_post = request.GET.get('req')
+#     posts = Post.objects.filter(Q(header__icontains=search_post) & Q(text__icontains=search_post))
+#     return render(request, 'posts/search.html', {"posts": posts,
+#                                                   'req': req})
+    
+# def search_rate(request, req):
+#     posts = Post.objects.filter(Q(header__icontains=search_post) & Q(text__icontains=search_post)).order_by('-pub_date')
+#     return render(request, 'posts/search.html', {"posts": posts})
+
+# def search_pub_date(request, req):
+#     posts = Post.objects.filter(Q(header__icontains=search_post) & Q(text__icontains=search_post)).order_by('likes')
+#     return render(request, 'posts/search.html', {"posts": posts})
