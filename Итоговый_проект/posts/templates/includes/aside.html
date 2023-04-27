@@ -1,5 +1,8 @@
 <h5>Лучшие авторы</h5>
 <hr>
 {% for rate in max_rate %}
-<a href="{% url 'profile' rate.author.username %}">{{ rate.author.get_full_name }}</a><br>
+<div class="aside_box">
+    <img src="{{ rate.author.img.url }}" alt="author image" class="img_aside">
+    <a href="{% url 'profile' rate.author.username %}">{{ rate.author.get_full_name }}</a><br>
+</div>
 {% endfor %}

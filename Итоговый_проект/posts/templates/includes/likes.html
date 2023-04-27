@@ -1,14 +1,14 @@
-<form action="{% url 'post_like' post.id %}" method="POST">
-    {% csrf_token %}
-    {% if post.likes %}
-    <button type="submit" name="post_id" value="{{post.id}}" class="btn_1"><img src="/static/img/heart.png"
-            alt="Like"></button>
-    {% else %}
-    <button type="submit" name="post_id" value="{{post.id}}" class="btn_2"><img src="/static/img/heart.png"
-            alt="Like"></button>
-    {% endif %}
-</form>
+<div class="ok_1">
+        <form action="{% url 'post_like' post.id %}" method="POST">
+                {% csrf_token %}
+                {% if post.likes %}
+                <button type="submit" name="post_id" value="{{post.id}}" class="btn_1"><img src="/static/img/heart.png"
+                                alt="Like"></button>
+                {% else %}
+                <button type="submit" name="post_id" value="{{post.id}}" class="btn_2"><img src="/static/img/heart.png"
+                                alt="Like"></button>
+                {% endif %}
+        </form>
 
-
-
-<p class="like_count">{{ post.likes.count }} Like{{ number_of_likes|pluralize }}</p>
+        <p class="like_count">{{ post.likes.count }}</p>
+</div>

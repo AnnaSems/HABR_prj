@@ -13,48 +13,27 @@
         <header>
             {% include 'includes/header.html' %}
         </header>
-        <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}">
-            <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search" name="search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Искать</button>
-        </form>
+        <div class="seach-box">
+            <form class="form" action="{% url 'search' %}">
+                <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search" name="search">
+                <button class="btn_search" type="submit">Искать</button>
+            </form>
 
-        {% if request.GET%}
-        <div>
-            <a href="#">по релевантности</a>
-            <ul>
-                <li class="relevant"><a href="#">по релевантности</a>
-                </li>
-                <li class="rate"><a href="#">по рейтингу</a></li>
-                <li class="pub_date"><a href="#">по времени</a></li>
-            </ul>
-        </div>
-        {% endif %}
-        {% for post in posts %}
-        <div class="block">
-            <ul class="post_bar">
-                <li>
-                    <a href="{% url 'profile' post.author.username %}">{{ post.author.get_full_name}}</a>
-                </li>
-                <li>
-                    {{ post.pub_date|date:"d.m.Y" }}
-                </li>
-            </ul>
-            <h3>{{ post.header }}</h3>
-            <p>{{ post.text }}</p>
-            {% if post.img %}
-            <img src="{{post.img.url}}" class="post_img"><br>
-            {% else %}
-            <p></p>
-            {% endif %}
-            <button class="btn"><a href="{% url 'post_detail' post.id %}">Читать полностью</a></button>
-            {% if not forloop.last %}
-            {% endif %}
-            <div class="blink"><br></div>
-            {% endfor %}
+            {% include 'includes/search_relevant.html' %}
+            <!-- <ul>
+            <li class="relevant">
+                <form action="{% url 'search' %}"><button type="submit">по релевантности</button></form>
+                <div>{% include 'includes/search_relevant.html' %}</div>
+            </li>
+            <li class="rate"><button>по рейтингу</button>
+                <div>{% include 'includes/search_rate.html' %}</div>
+            </li>
+            <li class="pub_date"><button>по времени</button>
+                <div>{% include 'includes/search_pub_date.html' %}</div>
+            </li>
+        </ul> -->
         </div>
         <footer>Подвал</footer>
     </body>
-
-
 
 </html>

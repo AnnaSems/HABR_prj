@@ -14,8 +14,12 @@
         <main class="profile_user box_1">
             <div class="profile_userbox box">
                 <p>Профиль пользователя</p>
-                <h4>{{ author.get_full_name}}</h4>
-                <img src="/static/img/avatardefault.jpeg" alt="logo">
+                <h4><a href="{{author.username}}" class="username">{{ author.get_full_name}}</a></h4>
+                {% if author.img %}
+                <img src="{{ author.img.url }}" alt="logo">
+                {% else %}
+                <img src="/media/images/avatardefault.jpeg" alt="default_logo">
+                {% endif %}
                 <p>Публикации: {{author.posts.count}}</p>
             </div>
             <div class="block box_2">
@@ -36,8 +40,13 @@
                     <p></p>
                     {% endif %}
                 </article>
-                <!-- Лайки -->
-                {% include 'includes/likes.html' %}
+                <div class="edit_like_box">
+                    {% if request.user == post.author %}
+                    <a class="btn_edit" href="{% url 'post_edit' post.id %}" role="button">Редактировать</a>
+                    {% endif %}
+                    <!-- Лайки -->
+                    {% include 'includes/likes.html' %}
+                </div>
                 {% include 'includes/add_comment.html' %}
             </div>
         </main>

@@ -1,0 +1,14 @@
+<div class="ok">
+        <form action="{% url 'comment_like' post.id comment.id %}" method="POST">
+                {% csrf_token %}
+                {% if comment.likes %}
+                <button type="submit" name="comment_id" value="{{comment.id}}" class="btn_comment"><img
+                                src="/static/img/heart.png" alt="Like"></button>
+                {% else %}
+                <button type="submit" name="comment_id" value="{{comment.id}}" class="btn_comment_2"><img
+                                src="/static/img/heart.png" alt="Like"></button>
+                {% endif %}
+        </form>
+
+        <p class="like_count">{{ comment.likes.count }}</p>
+</div>

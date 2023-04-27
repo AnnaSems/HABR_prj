@@ -1,7 +1,5 @@
 from django.db import models
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
+from users.models import User
 
 
 class Post(models.Model):
@@ -46,6 +44,7 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name='comments')
     created = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name='like_comment')
 
     def __str__(self):
         return 'Comment by {} on {}'.format(self.author, self.article)

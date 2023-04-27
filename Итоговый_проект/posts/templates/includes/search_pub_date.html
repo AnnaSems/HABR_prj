@@ -1,0 +1,22 @@
+{% for post in posts_pub_date %}
+<div class="block">
+    <ul class="post_bar">
+        <li>
+            <a href="{% url 'profile' post.author.username %}">{{ post.author.get_full_name}}</a>
+        </li>
+        <li>
+            {{ post.pub_date|date:"d.m.Y" }}
+        </li>
+    </ul>
+    <h3>{{ post.header }}</h3>
+    <p>{{ post.text }}</p>
+    {% if post.img %}
+    <img src="{{post.img.url}}" class="post_img"><br>
+    {% else %}
+    <p></p>
+    {% endif %}
+    <button class="btn"><a href="{% url 'post_detail' post.id %}">Читать полностью</a></button>
+    {% if not forloop.last %}
+    {% endif %}
+    <div class="blink"><br></div>
+    {% endfor %}

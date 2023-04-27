@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+    <head>
+        <title>Редактировать профиль пользователя
+        </title>
+        <link rel="stylesheet" href="/static/css/index.css" type="text/css">
+    </head>
+
+    <body>
+        <header>
+            {% include 'includes/header.html' %}
+        </header>
+        <main class="main-cls">
+            {% block content %}
+            <h1 class="h1_edit">Редактировать профиль</h1>
+            <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Редактировать" class="input_cs" />
+            </form>
+            {% endblock %}
+        </main>
+
+        <footer class="border-top text-center py-3">
+            <p>©
+                <!--2021 --> Copyright Хабр
+            </p>
+        </footer>
+    </body>
+
+
+</html>

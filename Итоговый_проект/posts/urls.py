@@ -5,8 +5,9 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='homepage'),
-    # Профиль
     path('profile/<str:username>/', views.profile, name='profile'),
+    # Редактирование профиля
+    path('profile/<int:id>/edit', views.edit_profile, name='edit_profile'),
     # Просмотр записи
     path('posts/<int:post_id>/', views.post_detail, name='post_detail'),
     # разделы меню
@@ -16,11 +17,17 @@ urlpatterns = [
     path('marketing/', views.market_page, name='market'),
     # Новый пост
     path('new/', views.new_post, name='new_post'),
+    # редактирование поста
+    path('posts/<int:post_id>/post_edit/',
+         views.post_edit, name='post_edit'),
     # комментарии
     path('posts/<int:post_id>/comment/', views.add_comment, name='add_comment'),
     # лайки
     path('posts/<int:post_id>/like/', views.like_dislike, name="post_like"),
-    #поиск
+    path('posts/<int:post_id>/<int:comment_id>/like/',
+         views.like_to_comment, name="comment_like"),
+    # поиск
     path('search/', views.search_page, name="search"),
-    #выборка по релевантности
+    # выборка по релевантности
+    # path('search/req/', views.search_relevant, name="search_rel"),
 ]

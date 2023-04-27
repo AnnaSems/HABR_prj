@@ -208,12 +208,17 @@ main li:nth-child(2) {
     align-items: end;
     padding-left: 3%;
     padding-top: 3%;
+    list-style: none;
 }
 
 .post_bar a {
     outline: none;
     text-decoration: none;
     color: #333;
+}
+
+.post_bar a:hover {
+    color: #6f7f7a;
 }
 
 h3,
@@ -290,6 +295,7 @@ aside {
     color: #333;
     font-weight: bold;
     font-size: .8rem;
+    padding-top: 7%;
 }
 
 footer {
@@ -308,8 +314,9 @@ footer {
     /* justify-items: center; */
     grid-template-columns: 1fr 2fr;
     margin-left: 0;
-    margin-left: 11%;
-    margin-right: 7%;
+    margin-left: 6%;
+    /* margin-right: 25%; */
+    width: 85%;
 }
 
 h4 {
@@ -323,7 +330,6 @@ h4 {
 .profile_userbox img {
     width: 50%;
     height: 50%;
-    opacity: .6;
     margin-left: 25%;
     margin-top: 3%;
 }
@@ -363,12 +369,36 @@ button {
     font: 400 13px system-ui;
     width: 9%;
     text-align: center;
-    margin-left: 8%;
+    margin-left: 34%;
     margin-top: 2%;
 
     border: 0;
     border-radius: 50%;
     background: none;
+    padding-left: 9px;
+    padding-right: 32px;
+    padding-top: 10px;
+}
+
+.btn_comment {
+    cursor: pointer;
+    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+    border-style: solid;
+    font: 400 13px system-ui;
+    width: 9%;
+    text-align: center;
+    margin-left: 34%;
+    margin-top: 2%;
+
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    padding: 9px 29px 3px 10px;
+}
+
+.btn_comment img {
+    width: 20px;
+    height: 20px;
 }
 
 .btn_1:hover {
@@ -377,6 +407,20 @@ button {
 
 .btn_1:active {
     transform: scale(0.98);
+    background: rgb(217, 109, 109);
+}
+
+.btn_comment:hover {
+    background: rgb(221, 143, 143);
+}
+
+.btn_comment:active {
+    transform: scale(0.98);
+    background: rgb(217, 109, 109);
+}
+
+.btn_comment_2 {
+    transform: scale(0.5);
     background: rgb(217, 109, 109);
 }
 
@@ -400,6 +444,7 @@ button {
 /* Страница создания статьи */
 
 .input_cs {
+    cursor: pointer;
     border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
     border-style: solid;
     font: 400 13px system-ui;
@@ -416,7 +461,7 @@ button {
 
 .main-cls h1 {
     text-align: center;
-    margin-left: 27%;
+    margin-left: 40%;
 }
 
 .main-cls p {
@@ -439,6 +484,7 @@ button {
     grid-template-columns: 1fr 2fr;
     margin-top: 3%;
     column-gap: 0.5rem;
+    margin-left: 13%;
 }
 
 .box_2 {
@@ -498,13 +544,13 @@ button {
 }
 
 /* likes */
-.like_count {
+/* .like_count {
     margin: 0% 0% 2% 5%;
     font-weight: bold;
-}
+} */
 
 textarea {
-    height: 25px !important;
+    height: 45px !important;
 }
 
 .comment_block {
@@ -567,4 +613,112 @@ textarea {
     max-height: 450px;
     margin-left: 8%;
     border: 2px solid #ececec;
+}
+
+.like_comm {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ok {
+    margin-left: 70%;
+}
+
+.ok_1 {
+    margin-right: 6%;
+}
+
+.ok_1,
+.ok {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.like_count {
+    margin-right: 5%;
+    padding: 0;
+}
+
+.form {
+    margin-bottom: 4%;
+}
+
+.form-control {
+    width: 96%;
+    margin-right: 10px;
+}
+
+.btn_search {
+    margin-left: -1%;
+    margin-top: 2%;
+    background: #303b44;
+    color: #f0f0f0;
+    padding: 10px 7px;
+}
+
+.seach-box {
+    display: flex;
+    position: absolute;
+    margin-top: 12%;
+    left: 12%;
+    flex-direction: column;
+    align-items: center;
+    width: 79%;
+}
+
+.search_main {
+    margin: 0;
+}
+
+.btn_edit {
+    margin-left: 6%;
+    margin-top: 3%;
+    text-decoration: none;
+    color: #0000009e;
+}
+
+.edit_like_box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit_profile {
+    margin-left: 30%;
+    margin-top: 10%;
+}
+
+span {
+    font-weight: bold;
+}
+
+.h1_edit {
+    text-align: center;
+    margin-left: 31%;
+}
+
+.post-form {
+    margin-left: 15%;
+}
+
+.img_aside {
+    max-width: 35px;
+    max-height: 35px;
+    border-radius: 24%;
+    padding-top: 2%;
+    margin-top: 3%;
+    margin-left: 1%;
+}
+
+.aside_box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.username {
+    text-decoration: none;
+    color: #303b44;
+}
+
+.username:hover {
+    color: #6f7f7a;
 }

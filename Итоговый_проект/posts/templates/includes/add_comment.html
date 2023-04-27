@@ -27,9 +27,12 @@
                     </a>
                 </h5>
                 <hr>
-                <p>
-                    {{ comment.text }}
-                </p>
+                <div class="like_comm">
+                    <p>
+                        {{ comment.text }}
+                    </p>
+                    {% include 'includes/likes_to_comment.html' %}
+                </div>
                 <p class="pub_date"> {{ comment.created }}</p>
             </div>
         </div>
