@@ -13,11 +13,14 @@ from users.models import User
 
 # Главная страницаs
 def index(request):
-    posts = Post.objects.all().order_by('-pub_date')
+    posts = Post.objects.filter(pub_date__isnull=False).filter(
+        hide=False).order_by('-pub_date')
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    max_rate_author = Post.objects.all().order_by('-likes')[:10]
+    max_rate_author = Post.objects.filter(
+        pub_date__isnull=False).filter(
+        hide=False).order_by('-likes')[:10]
     context = {
         'page_obj': page_obj,
         'max_rate': max_rate_author,
@@ -27,11 +30,15 @@ def index(request):
 
 # Дизайн
 def design_page(request):
-    posts = Post.objects.filter(category='Design').order_by('-pub_date')[:10]
+    posts = Post.objects.filter(pub_date__isnull=False).filter(
+        hide=False).filter(
+        category='Design').order_by('-pub_date')[:10]
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    max_rate_author = Post.objects.all().order_by('-likes')[:10]
+    max_rate_author = Post.objects.filter(
+        pub_date__isnull=False).filter(
+        hide=False).order_by('-likes')[:10]
     context = {
         'page_obj': page_obj,
         'max_rate': max_rate_author,
@@ -42,12 +49,15 @@ def design_page(request):
 
 # Веб-разработка
 def web_dev_page(request):
-    posts = Post.objects.filter(
-        category='Web').order_by('-pub_date')[:10]
+    posts = Post.objects.filter(pub_date__isnull=False).filter(
+        category='Web').filter(
+        hide=False).order_by('-pub_date')[:10]
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    max_rate_author = Post.objects.all().order_by('-likes')[:10]
+    max_rate_author = Post.objects.filter(
+        pub_date__isnull=False).filter(
+        hide=False).order_by('-likes')[:10]
     context = {
         'page_obj': page_obj,
         'max_rate': max_rate_author,
@@ -58,11 +68,15 @@ def web_dev_page(request):
 
 # Мобильная разработка
 def mob_dev_page(request):
-    posts = Post.objects.filter(category='Mobile').order_by('-pub_date')[:10]
+    posts = Post.objects.filter(pub_date__isnull=False).filter(
+        hide=False).filter(
+        category='Mobile').order_by('-pub_date')[:10]
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    max_rate_author = Post.objects.all().order_by('-likes')[:10]
+    max_rate_author = Post.objects.filter(
+        pub_date__isnull=False).filter(
+        hide=False).order_by('-likes')[:10]
     context = {
         'page_obj': page_obj,
         'max_rate': max_rate_author,
@@ -73,12 +87,14 @@ def mob_dev_page(request):
 
 # Маркетинг
 def market_page(request):
-    posts = Post.objects.filter(
+    posts = Post.objects.filter(pub_date__isnull=False).filter(
+        hide=False).filter(
         category='Marketing').order_by('-pub_date')[:10]
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    max_rate_author = Post.objects.all().order_by('-likes')[:10]
+    max_rate_author = Post.objects.filter(
+        pub_date__isnull=False).order_by('-likes')[:10]
     context = {
         'page_obj': page_obj,
         'max_rate': max_rate_author,
@@ -89,7 +105,8 @@ def market_page(request):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    latest = author.posts.all().order_by('-pub_date')
+    latest = author.posts.filter(pub_date__isnull=False).filter(
+        hide=False).order_by('-pub_date')
     paginator = Paginator(latest, 9)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -97,6 +114,7 @@ def profile(request, username):
         'page': page,
         "author": author,
         'paginator': paginator,
+        'latest': latest,
     }
     return render(request, 'posts/profile.html', context)
 
@@ -148,6 +166,7 @@ def new_post(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = user
+            post.publish()
             post.save()
             return redirect('homepage')
         return render(request, 'posts/new.html', {'form': form})
@@ -155,6 +174,60 @@ def new_post(request):
     return render(request, 'posts/new.html', {'form': form})
 
 
+@login_required
+def draft_new_post(request):
+    user = request.user
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = user
+            post.save()
+            return redirect('draft_article', username=user.username)
+        return render(request, 'posts/draft_post.html', {'form': form})
+    form = PostForm()
+    return render(request, 'posts/draft_post.html', {'form': form})
+
+
+@login_required
+def draft_article(request, username):
+    author = get_object_or_404(User, username=username)
+    latest = author.posts.filter(pub_date__isnull=True).filter(
+        hide=False).order_by('-pub_date')
+    paginator = Paginator(latest, 9)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    context = {
+        'page': page,
+        "author": author,
+        'paginator': paginator,
+    }
+    return render(request, 'posts/draft_article.html', context)
+
+
+@login_required
+def edit_draft_article(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if post.author != request.user:
+        return redirect('draft_article', username=post.author.username)
+    form = PostForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=post
+    )
+    if form.is_valid():
+        post.publish()
+        form.save()
+        return redirect('homepage')
+    context = {
+        'post': post,
+        'form': form,
+        'is_edit': True,
+    }
+    return render(request, 'posts/new.html', context)
+
+
+@login_required
 def post_edit(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     if post.author != request.user:
@@ -174,6 +247,26 @@ def post_edit(request, post_id):
         'is_edit': True,
     }
     return render(request, 'posts/new.html', context)
+
+
+@login_required()
+def hide_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if post.author != request.user:
+        return redirect('post_detail', post_id=post_id)
+    post.hide_post()
+    post.save()
+    return redirect('profile', username=post.author.username)
+
+
+@login_required()
+def hide_draft(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if post.author != request.user:
+        return redirect('draft_article', username=post.author.username)
+    post.hide_post()
+    post.save()
+    return redirect('draft_article', username=post.author.username)
 
 
 @login_required

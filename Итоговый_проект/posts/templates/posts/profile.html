@@ -7,23 +7,28 @@
 
     <body class="profile_body">
         <header>
-            {% include 'includes/header.html' %}
+            {% include 'includes/header_profile.html' %}
         </header>
         <main class="profile_user">
             <div class="profile_userbox">
                 <p>Профиль пользователя</p>
-                <h4><a href="{{author.username}}" class="username">{{ author.get_full_name}}</a></h4>
+                <h4><a href="#" class="username">{{ author.get_full_name}}</a></h4>
                 {% if author.img %}
                 <img src="{{ author.img.url }}" alt="logo">
                 {% else %}
                 <img src="/media/images/avatardefault.jpeg" alt="default_logo">
                 {% endif %}
-                <p><span>Публикации:</span> {{author.posts.count}}</p>
+                <p><span>Публикации:</span> {{latest.count}}</p>
                 <p><span>Возраст:</span> {{author.age}}</p>
                 <p><span>Краткое описание:</span><br> {{author.description}}</p>
                 <div class="edit_profile">
-                    {% if user.is_authenticated and request.user == user %}
+                    {% if user.is_authenticated and request.user == author %}
                     <a class="btn_edit" href="{% url 'edit_profile' author.id %}" role="button">Редактировать</a>
+                    {% endif %}
+                </div>
+                <div class="draft_box">
+                    {% if user.is_authenticated and request.user == author %}
+                    <a class="draft_a" href="{% url 'draft_article' author.username %}">Черновики</a>
                     {% endif %}
                 </div>
             </div>

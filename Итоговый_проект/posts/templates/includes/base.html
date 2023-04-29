@@ -2,7 +2,12 @@
 {% for post in page_obj %}
 <div class="block">
     <ul class="post_bar">
-        <li>
+        <li class="img_logo">
+            {% if post.author.img %}
+            <img src="{{ post.author.img.url }}" alt="logo" class="img_aside">
+            {% else %}
+            <img src="/media/images/avatardefault.jpeg" alt="default_logo" class="img_aside">
+            {% endif %}
             <a href="{% url 'profile' post.author.username %}">{{ post.author.get_full_name}}</a>
         </li>
         <li>

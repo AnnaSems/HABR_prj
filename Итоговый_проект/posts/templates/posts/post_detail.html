@@ -41,9 +41,15 @@
                     {% endif %}
                 </article>
                 <div class="edit_like_box">
-                    {% if request.user == post.author %}
-                    <a class="btn_edit" href="{% url 'post_edit' post.id %}" role="button">Редактировать</a>
-                    {% endif %}
+                    <div class="correct_post">
+                        {% if request.user == post.author %}
+                        <a class="btn_edit" href="{% url 'post_edit' post.id %}" role="button">Редактировать</a>
+                        {% endif %}
+                        {% if request.user == post.author %}
+                        <a class="trash" href="{% url 'post_hide' post.id %}" role="button"><img class="trash_img"
+                                src="/static/img/free-icon-trash-bin-5789579.png" alt="delete post"></a>
+                        {% endif %}
+                    </div>
                     <!-- Лайки -->
                     {% include 'includes/likes.html' %}
                 </div>

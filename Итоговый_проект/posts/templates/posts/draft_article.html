@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+    <head>
+        <link rel="stylesheet" href="/static/css/index.css" type="text/css">
+    </head>
+
+    <body class="profile_draft">
+        <header>
+            {% include 'includes/header_profile.html' %}
+        </header>
+        <main class="main_draft">
+            {% for post in page %}
+            <div class="block_1">
+                <ul class="post_bar prof">
+                    <li>
+                        <a href="{% url 'profile' post.author.username %}">{{ post.author.username}}</a>
+                    </li>
+                    <li>
+                        {{ post.pub_date|date:"d.m.Y" }}
+                    </li>
+                    <li class="draft_a3">
+                        {% if user.is_authenticated and request.user == author %}
+                        <a class="btn_edit" href="{% url 'draft_edit' post.id %}" role="button">Редактировать</a>
+                        {% endif %}
+                    </li>
+                </ul>
+                <h3>{{ post.header }}</h3>
+                <p>{{ post.text }}</p>
+                {% if post.img %}
+                <img src="{{post.img.url}}" class="post_img_"><br>
+                {% else %}
+                <p></p>
+                {% endif %}
+                {% if request.user == post.author %}
+                <a class="trash_draft" href="{% url 'draft_hide' post.id %}" role="button"><img class="trash_img"
+                        src="/static/img/free-icon-trash-bin-5789579.png" alt="delete post"></a>
+                {% endif %}
+            </div>
+            {% if not forloop.last %}
+            {% endif %}
+            <div class="blink"><br></div>
+            {% endfor %}
+            </div>
+
+            {% include 'includes/paginator.html' %}
+        </main>
+
+        <footer class="border-top text-center py-3">
+            <p>©
+                <!--2021 --> Copyright Хабр
+            </p>
+        </footer>
+    </body>
+
+</html>

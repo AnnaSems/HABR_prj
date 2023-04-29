@@ -17,9 +17,23 @@ urlpatterns = [
     path('marketing/', views.market_page, name='market'),
     # Новый пост
     path('new/', views.new_post, name='new_post'),
+    # Черновик
+    path('draft_post/', views.draft_new_post, name='draft_post'),
+    # Черновики пользователя
+    path('draft_arcticle/<str:username>/',
+         views.draft_article, name='draft_article'),
+    # Редактирование черновика
+    path('posts/<int:post_id>/post_edit/',
+         views.edit_draft_article, name='draft_edit'),
+    # удаление черновика
+    path('post/delete/<int:post_id>/',
+         views.hide_draft, name='draft_hide'),
     # редактирование поста
     path('posts/<int:post_id>/post_edit/',
          views.post_edit, name='post_edit'),
+    # удаление поста
+    path('posts/delete/<int:post_id>/',
+         views.hide_post, name='post_hide'),
     # комментарии
     path('posts/<int:post_id>/comment/', views.add_comment, name='add_comment'),
     # лайки

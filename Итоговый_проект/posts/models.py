@@ -1,5 +1,7 @@
 from django.db import models
 from users.models import User
+from django.utils.functional import cached_property
+from django.utils import timezone
 
 
 class Post(models.Model):
@@ -12,7 +14,7 @@ class Post(models.Model):
 
     header = models.TextField(max_length=60, verbose_name="Заголовок статьи")
     text = models.TextField(verbose_name="Текст статьи")
-    pub_date = models.DateTimeField(auto_now_add=True)
+    pub_date = models.DateTimeField(blank=True, null=True, default=None)
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -23,9 +25,24 @@ class Post(models.Model):
     category = models.CharField(
         max_length=150, choices=CHOICES, null=True, blank=True, verbose_name="Выберите категорию")
     likes = models.ManyToManyField(User, related_name='like')
+    hide = models.BooleanField(blank=True, null=True, default=False)
 
     def number_of_likes(self):
         return self.likes.count()
+
+    @cached_property
+    def is_published(self):
+        return self.pub_date <= timezone.now()
+
+    def publish(self):
+        self.pub_date = timezone.now()
+
+    def hide_post(self):
+        self.hide = True
+
+    @cached_property
+    def is_hide_post(self):
+        return self.hide <= True
 
 
 class Comment(models.Model):
